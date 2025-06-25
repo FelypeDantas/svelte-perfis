@@ -33,7 +33,7 @@ Este projeto foi desenvolvido com as seguintes tecnologias:
 
 ## 📦 Como usar
 
-Acesse o link para ver o projeto: <a href="https://felypedantas.github.io/svelte-perfis/"> Svelte-perfis </a>
+Acesse o link para ver o projeto: <a href="https://svelte-perfis-two.vercel.app/"> Svelte-perfis </a>
 
 <h2 align="center">Autor</h2>
 <div align="center"> 
