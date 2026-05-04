@@ -1,33 +1,52 @@
-<div class="barra-superior">
-    <span class="acao"></span>
-    <span class="acao"></span>
-    <span class="acao"></span>
-  </div>
+<div class="window-bar">
+  <span class="control close"></span>
+  <span class="control minimize"></span>
+  <span class="control maximize"></span>
+</div>
 
-  <style>
-     .barra-superior {
-    background: rgba(255, 255, 255, 0.5);
+<style>
+  .window-bar {
+    --control-size: 8px;
+    --gap: 6px;
+
+    display: flex;
+    align-items: center;
+    gap: var(--gap);
+
     padding: 10px;
     border-radius: 8px 8px 0 0;
+
+    background: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(8px);
   }
 
-  .barra-superior > .acao {
-    width: 7px;
-    height: 7px;
+  .control {
+    width: var(--control-size);
+    height: var(--control-size);
 
-    display: inline-block;
     border-radius: 50%;
+    display: inline-block;
+
+    transition: transform 0.15s ease, filter 0.15s ease;
   }
 
-  .barra-superior > .acao:first-child {
+  /* Cores sem depender de nth-child */
+  .control.close {
     background: #d8695b;
   }
 
-  .barra-superior > .acao:nth-child(2) {
+  .control.minimize {
     background: #eac213;
   }
 
-  .barra-superior > .acao:nth-child(3) {
+  .control.maximize {
     background: #79c743;
   }
-  </style>
+
+  /* Interação */
+  .control:hover {
+    transform: scale(1.15);
+    filter: brightness(0.9);
+    cursor: pointer;
+  }
+</style>
