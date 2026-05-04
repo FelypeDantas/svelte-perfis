@@ -1,115 +1,135 @@
 <script lang="ts">
-    import type IUsuario from "../interfaces/IUsuario";
-    import { buscaRepositorios } from "../requisicoes";
+  import type IUsuario from "../interfaces/IUsuario";
+  import BarraSuperior from "./BarraSuperior.svelte";
 
+  export let usuario: IUsuario;
 
-    import BarraSuperior from "./BarraSuperior.svelte";
-
-    export let usuario: IUsuario;
-
-    $: temRepositorio = Boolean(usuario.repositorios_recentes.length);
-
+  $: temRepositorios = usuario?.repositorios_recentes?.length > 0;
 </script>
-<div class="card-usuario">
-    <BarraSuperior/>
 
-    <div class="usuario">
-      <div  class="foto-container">
-        <a href={usuario.perfil_url} target="_blank" rel="noopener">
-        <div class="foto-usuario" style:background-image="url({usuario.avatar_url})">
-        </div>
-      </a>
-      </div>
+<div class="card">
+  <BarraSuperior />
 
-      <div class="detalhes-usuario">
-        {#if usuario.nome}
-        <div class="info">
-            Nome: <span>{usuario.nome}</span>
-        </div>
-        {/if}
-        <div class="info">
-          Usuário: <span>{usuario.login}</span>
-        </div>
-        <div class="info">
-          Seguidores: <span>{usuario.seguidores}</span>
-        </div>
-        <div class="info">
-          Repositorio: <span>{usuario.repositorios_publicos}</span>
-        </div>
-      </div>
+  <div class="conteudo">
+    <a
+      href={usuario.perfil_url}
+      target="_blank"
+      rel="noopener noreferrer"
+      class="avatar-link"
+      aria-label="Abrir perfil"
+    >
+      <div
+        class="avatar"
+        style="background-image: url({usuario.avatar_url})"
+      ></div>
+    </a>
 
-      {#if temRepositorio}
-      <div class="repositorios">
-        <h2 class="titulo">Repositórios Recentes:</h2>
+    <div class="info">
+      {#if usuario.nome}
+        <p><strong>Nome:</strong> <span>{usuario.nome}</span></p>
+      {/if}
+
+      <p><strong>Usuário:</strong> <span>{usuario.login}</span></p>
+      <p><strong>Seguidores:</strong> <span>{usuario.seguidores}</span></p>
+      <p><strong>Repositórios:</strong> <span>{usuario.repositorios_publicos}</span></p>
+    </div>
+
+    {#if temRepositorios}
+      <div class="repos">
+        <h2>Repositórios recentes</h2>
 
         <ul>
-            {#each usuario.repositorios_recentes as repositorio}
+          {#each usuario.repositorios_recentes as repo (repo.id)}
             <li>
-                <a href={repositorio.url} target="_blank" rel="noopener" class="repositorio">{repositorio.nome}</a>
+              <a
+                href={repo.url}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {repo.nome}
+              </a>
             </li>
-            {/each}
-            
+          {/each}
         </ul>
-    </div>
-      {/if}
-      
-    </div>
+      </div>
+    {/if}
   </div>
+</div>
 
-  <style>
-    .card-usuario {
-    margin-top: 65px;
+<style>
+  .card {
+    margin-top: 4rem;
   }
 
-  .usuario {
-    padding: 28px 0;
-    background: rgba(255, 255, 255, 0.5);
-    box-shadow: -12px 37px 45px rgba(133, 127, 201, 0.18);
-    border-radius: 0px 0px 13px 13px;
-
+  .conteudo {
     display: flex;
-    justify-content: center;
+    flex-wrap: wrap;
+    gap: 2rem;
+    align-items: center;
+
+    padding: 2rem;
+    border-radius: 0 0 12px 12px;
+
+    background: rgba(255, 255, 255, 0.6);
+    backdrop-filter: blur(8px);
+    box-shadow: -12px 37px 45px rgba(133, 127, 201, 0.18);
   }
 
-  .foto-container {
-    margin-right: 81px;
+  .avatar-link {
+    flex-shrink: 0;
   }
 
-  .foto-usuario {
-    width: 12.75rem;
-    height: 12.75rem;
-    border: 4.56px solid #2e80fa;
+  .avatar {
+    width: 12rem;
+    height: 12rem;
     border-radius: 50%;
+    border: 4px solid #2e80fa;
+
     background-size: cover;
+    background-position: center;
+
+    transition: transform 0.2s ease;
   }
 
-  .detalhes-usuario {
-    margin-right: 55px;
+  .avatar-link:hover .avatar {
+    transform: scale(1.05);
   }
 
-  .detalhes-usuario > .info {
-    font-weight: 600;
-    font-size: 20px;
-    line-height: 31px;
+  .info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+
+    font-size: 1.1rem;
     color: #395278;
   }
 
-  .detalhes-usuario > .info > span {
+  .info span {
     color: #6781a8;
-    font-weight: normal;
+    font-weight: 400;
   }
 
-  .repositorios > .titulo {
-    font-size: 20px;
-    line-height: 31px;
-    font-weight: 600;
+  .repos {
+    flex: 1 1 100%;
+  }
+
+  .repos h2 {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
     color: #395278;
   }
 
-  .repositorio {
-    font-size: 20px;
-    line-height: 31px;
+  .repos ul {
+    padding-left: 1rem;
+  }
+
+  .repos a {
     color: #6781a8;
+    text-decoration: none;
     transition: color 0.2s;
   }
-  </style>
+
+  .repos a:hover {
+    color: #2e80fa;
+  }
+</style>
